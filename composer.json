@@ -1,0 +1,28 @@
+{
+    "name": "nodes/validation",
+    "description": "Makes it easier to work with validation in Laravel",
+    "keywords": [
+        "nodes",
+        "validation",
+        "laravel"
+    ],
+    "license": "MIT",
+    "homepage": "http://nodesagency.com",
+    "authors": [
+        {
+            "name": "Morten Rugaard",
+            "email": "moru@nodes.dk",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "laravel/framework": "5.1.*",
+        "nodes/core": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nodes\\Validation\\": "src"
+        }
+    },
+    "minimum-stability": "stable"
+}
