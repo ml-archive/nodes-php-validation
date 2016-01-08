@@ -13,7 +13,7 @@ if (!function_exists('validation_key_failed')) {
     {
         // Only continue if we actually
         // have a validation that has failed
-        if (\Session::has('error')) {
+        if (!\Session::has('error')) {
             return false;
         }
 
