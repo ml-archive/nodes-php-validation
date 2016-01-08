@@ -45,9 +45,9 @@ abstract class AbstractValidator
     /**
      * Group name
      *
-     * @var string|null
+     * @var string
      */
-    protected $group = null;
+    protected $group = 'create';
 
     /**
      * Validation rules
@@ -373,6 +373,32 @@ abstract class AbstractValidator
     public function getErrorCodes()
     {
         return $this->errorCodes;
+    }
+
+    /**
+     * Retrieve all messages from error bag
+     *
+     * @author Morten Rugaard <moru@nodes.dk>
+     *
+     * @access public
+     * @return array
+     */
+    public function getErrorMessages()
+    {
+        return $this->errorsBag()->all();
+    }
+
+    /**
+     * Retrieve all failed rules from error bag
+     *
+     * @author Morten Rugaard <moru@nodes.dk>
+     *
+     * @access public
+     * @return array
+     */
+    public function getFailedRules()
+    {
+        return $this->errorsBag()->keys();
     }
 
     /**
