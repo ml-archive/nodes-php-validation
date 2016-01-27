@@ -16,13 +16,15 @@
         }
     ],
     "require": {
-        "laravel/framework": "5.1.*",
+        "laravel/framework": "5.1.*||5.2.*",
         "nodes/core": "^0.1"
     },
     "autoload": {
         "psr-4": {
             "Nodes\\Validation\\": "src"
-        }
-    },
-    "minimum-stability": "stable"
+        },
+        "files": [
+            "src/Support/Helpers/Checks.php"
+        ]
+    }
 }
