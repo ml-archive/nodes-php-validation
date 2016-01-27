@@ -47,7 +47,7 @@ abstract class AbstractValidator
      *
      * @var string|null
      */
-    protected $group = null;
+    protected $group = 'create';
 
     /**
      * Validation rules

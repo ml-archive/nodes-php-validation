@@ -36,18 +36,30 @@ class ValidationException extends NodesException
             $message = $errorMessages->first();
         }
 
+        // Custom error codes container
+        $customErrorCodes = [];
+
         // Custom error codes takes priority, so let's see
         // if one of our failed rules has one
         $failedRulesCustomErrorCodes = array_intersect(array_keys($errorCodes), $failedRules);
+        if (!empty($failedRulesCustomErrorCodes)) {
+            foreach ($failedRulesCustomErrorCodes as $failedRule) {
+                $customErrorCodes[$errorCodes[$failedRule]] = $errorCodes[$failedRule];
+            }
+        }
+
+        // Determine exception and status code
+        $exceptionCode = !empty($customErrorCodes) ? $customErrorCodes : 412;
+        $statusCode = !empty($customErrorCodes) ? array_shift($customErrorCodes) : 412;
 
         // Construct exception
-        parent::__construct($message, implode(', ', $failedRulesCustomErrorCodes), $headers, $report, $severity);
+        parent::__construct($message, $exceptionCode, $headers, $report, $severity);
 
         // Fill exception's error bag with validation errors
         $this->setErrors($errorMessages);
 
         // Set status code
-        $this->setStatusCode(412);
+        $this->setStatusCode($statusCode, $errorMessages->first());
     }
 
     /**
