@@ -2,7 +2,7 @@
 namespace Nodes\Validation;
 
 use Illuminate\Validation\Validator as IlluminateValidator;
-use Nodes\AbstractServiceProvider as NodesAbstractServiceProvider;
+use Nodes\AbstractServiceProvider;
 use Nodes\Validation\Exceptions\InvalidValidatorException;
 
 /**
@@ -10,8 +10,24 @@ use Nodes\Validation\Exceptions\InvalidValidatorException;
  *
  * @package Nodes\Validation
  */
-class ServiceProvider extends NodesAbstractServiceProvider
+class ServiceProvider extends AbstractServiceProvider
 {
+    /**
+     * Package name
+     *
+     * @var string
+     */
+    protected $package = 'validation';
+
+    /**
+     * Array of configs to copy
+     *
+     * @var array
+     */
+    protected $configs = [
+        'config/validation.php' => 'config/nodes/validation.php'
+    ];
+
     /**
      * Boot the service provider
      * Used to resolve our custom validator
