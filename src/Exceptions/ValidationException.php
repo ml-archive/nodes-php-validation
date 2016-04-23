@@ -60,6 +60,9 @@ class ValidationException extends NodesException
 
         // Set status code
         $this->setStatusCode($statusCode, $errorMessages->first());
+        
+        // Do not send report
+        $this->dontReport();
     }
 
     /**
