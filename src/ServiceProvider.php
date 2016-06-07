@@ -1,8 +1,8 @@
 <?php
 namespace Nodes\Validation;
 
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Illuminate\Validation\Validator as IlluminateValidator;
-use Nodes\AbstractServiceProvider;
 use Nodes\Validation\Exceptions\InvalidValidatorException;
 
 /**
@@ -10,27 +10,10 @@ use Nodes\Validation\Exceptions\InvalidValidatorException;
  *
  * @package Nodes\Validation
  */
-class ServiceProvider extends AbstractServiceProvider
+class ServiceProvider extends IlluminateServiceProvider
 {
     /**
-     * Package name
-     *
-     * @var string
-     */
-    protected $package = 'validation';
-
-    /**
-     * Array of configs to copy
-     *
-     * @var array
-     */
-    protected $configs = [
-        'config/validation.php' => 'config/nodes/validation.php'
-    ];
-
-    /**
      * Boot the service provider
-     * Used to resolve our custom validator
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
@@ -39,6 +22,11 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function boot()
     {
+        parent::boot();
+
+        // Register publish groups
+        $this->publishGroups();
+
         // Override Laravel's validator with the one from our config file
         $this->app['validator']->resolver(function($translator, $data, $rules, $messages) {
             // Retrieve namespace of validator
@@ -54,5 +42,34 @@ class ServiceProvider extends AbstractServiceProvider
 
             return $validator;
         });
+    }
+
+    /**
+     * Register service provider
+     *
+     * @author Morten Rugaard <moru@nodes.dk>
+     *
+     * @access public
+     * @return void
+     */
+    public function register()
+    {
+        /* ... */
+    }
+
+    /**
+     * Register publish groups
+     *
+     * @author Morten Rugaard <moru@nodes.dk>
+     *
+     * @access protected
+     * @return void
+     */
+    protected function publishGroups()
+    {
+        // Config files
+        $this->publishes([
+            __DIR__ . '/../config/validation.php' => config_path('nodes/validation.php')
+        ], 'config');
     }
 }
