@@ -49,7 +49,7 @@ class ValidationException extends NodesException
         }
 
         // Determine exception and status code
-        $exceptionCode = !empty($customErrorCodes) ? $customErrorCodes : 412;
+        $exceptionCode = !empty($customErrorCodes) ? array_shift($customErrorCodes) : 412;
         $statusCode = !empty($customErrorCodes) ? array_shift($customErrorCodes) : 412;
 
         // Construct exception
