@@ -15,7 +15,6 @@ class ValidationException extends NodesException
      * ValidationException constructor
      *
      * @author Morten Rugaard <moru@nodes.dk>
-     *
      * @access public
      * @param  \Illuminate\Validation\Validator $validator
      * @param  array                            $errorCodes
@@ -49,8 +48,7 @@ class ValidationException extends NodesException
         }
 
         // Determine exception and status code
-        $exceptionCode = !empty($customErrorCodes) ? array_shift($customErrorCodes) : 412;
-        $statusCode = !empty($customErrorCodes) ? array_shift($customErrorCodes) : 412;
+        $exceptionCode = $statusCode = !empty($customErrorCodes) ? array_shift($customErrorCodes) : 412;
 
         // Construct exception
         parent::__construct($message, $exceptionCode, $headers, $report, $severity);
@@ -60,7 +58,7 @@ class ValidationException extends NodesException
 
         // Set status code
         $this->setStatusCode($statusCode, $errorMessages->first());
-        
+
         // Do not send report
         $this->dontReport();
     }
@@ -69,7 +67,6 @@ class ValidationException extends NodesException
      * Parse failed rules
      *
      * @author Morten Rugaard <moru@nodes.dk>
-     *
      * @access protected
      * @param  $failedRules
      * @return array
