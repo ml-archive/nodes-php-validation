@@ -1,4 +1,5 @@
 <?php
+
 namespace Nodes\Validation;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -6,18 +7,15 @@ use Illuminate\Validation\Validator as IlluminateValidator;
 use Nodes\Validation\Exceptions\InvalidValidatorException;
 
 /**
- * Class ServiceProvider
- *
- * @package Nodes\Validation
+ * Class ServiceProvider.
  */
 class ServiceProvider extends IlluminateServiceProvider
 {
     /**
-     * Boot the service provider
+     * Boot the service provider.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return void
      */
     public function boot()
@@ -28,7 +26,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishGroups();
 
         // Override Laravel's validator with the one from our config file
-        $this->app['validator']->resolver(function($translator, $data, $rules, $messages) {
+        $this->app['validator']->resolver(function ($translator, $data, $rules, $messages) {
             // Retrieve namespace of validator
             $customValidator = config('nodes.validation.validator');
 
@@ -36,7 +34,7 @@ class ServiceProvider extends IlluminateServiceProvider
             $validator = new $customValidator($translator, $data, $rules, $messages);
 
             // Validate validator parent
-            if (!$validator instanceof IlluminateValidator) {
+            if (! $validator instanceof IlluminateValidator) {
                 throw new InvalidValidatorException(sprintf('Validator [%s] is not extending Laravel\'s validator [%s]', get_class($validator), 'Illuminate\Validation\Validator'));
             }
 
@@ -45,11 +43,10 @@ class ServiceProvider extends IlluminateServiceProvider
     }
 
     /**
-     * Register service provider
+     * Register service provider.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return void
      */
     public function register()
@@ -58,18 +55,17 @@ class ServiceProvider extends IlluminateServiceProvider
     }
 
     /**
-     * Register publish groups
+     * Register publish groups.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access protected
      * @return void
      */
     protected function publishGroups()
     {
         // Config files
         $this->publishes([
-            __DIR__ . '/../config/validation.php' => config_path('nodes/validation.php')
+            __DIR__.'/../config/validation.php' => config_path('nodes/validation.php'),
         ], 'config');
     }
 }

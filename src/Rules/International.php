@@ -1,43 +1,41 @@
 <?php
+
 namespace Nodes\Validation\Rules;
 
 /**
- * Class International
+ * Class International.
  *
  * @trait
- * @package Nodes\Validation\Rules
  */
 trait International
 {
     /**
-     * Validate that attribute is a valid Swift/BIC (Bank Identifier Code)
+     * Validate that attribute is a valid Swift/BIC (Bank Identifier Code).
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access protected
      * @param  string $attribute
      * @param  string $value
      * @param  array  $parameters
-     * @return boolean
+     * @return bool
      */
     protected function validateBic($attribute, $value, $parameters)
     {
         // Use provided regex or use fallback
-        $pattern = !empty($parameters[0]) ? $parameters[0] : '/^[A-Za-z]{4,} ?[A-Za-z]{2,} ?[A-Za-z0-9]{2,} ?([A-Za-z0-9]{3,})?$/';
+        $pattern = ! empty($parameters[0]) ? $parameters[0] : '/^[A-Za-z]{4,} ?[A-Za-z]{2,} ?[A-Za-z0-9]{2,} ?([A-Za-z0-9]{3,})?$/';
 
         return (bool) preg_match($pattern, $value);
     }
 
     /**
-     * Validate that attribute is a valid IBAN number (International Bank Account Number)
+     * Validate that attribute is a valid IBAN number (International Bank Account Number).
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access protected
      * @param  string $attribute
      * @param  string $value
      * @param  array  $parameters
-     * @return boolean
+     * @return bool
      */
     protected function validateIban($attribute, $value, $parameters)
     {
@@ -56,7 +54,7 @@ trait International
             'SA' => 24, 'RS' => 22, 'SK' => 24, 'SI' => 19, 'ES' => 24, 'SE' => 24, 'CH' => 21, 'TN' => 24,
             'TR' => 26, 'AE' => 23, 'GB' => 22, 'VG' => 24, 'DZ' => 24, 'AO' => 25, 'BJ' => 28, 'BF' => 27,
             'BI' => 16, 'CM' => 27, 'CV' => 25, 'IR' => 26, 'CI' => 28, 'MG' => 27, 'ML' => 28, 'MZ' => 25,
-            'SN' => 28, 'UA' => 29
+            'SN' => 28, 'UA' => 29,
         ];
 
         // Prepare string for validation
@@ -66,7 +64,7 @@ trait International
         $countryCode = substr($value, 0, 2);
 
         // Retrieve IBAN length
-        $countryIbanLength = !empty($countryIbanLengths[$countryCode]) ? $countryIbanLengths[$countryCode] : 0;
+        $countryIbanLength = ! empty($countryIbanLengths[$countryCode]) ? $countryIbanLengths[$countryCode] : 0;
 
         // Validate IBAN length
         if ($countryIbanLength == 0 || strlen($value) != $countryIbanLength) {
@@ -80,7 +78,7 @@ trait International
         }
 
         // Prepare for generation of checksum
-        $value = substr($value, 4) . substr($value, 0, 4);
+        $value = substr($value, 4).substr($value, 0, 4);
         $value = str_replace(array_keys($checksumData), array_values($checksumData), $value);
 
         // Generate checksum
@@ -96,20 +94,19 @@ trait International
     }
 
     /**
-     * Validate that attribute is a valid ISBN10 or ISBN13 number (International Standard Book Number)
+     * Validate that attribute is a valid ISBN10 or ISBN13 number (International Standard Book Number).
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access protected
      * @param  string $attribute
      * @param  string $value
      * @param  array  $parameters
-     * @return boolean
+     * @return bool
      */
     protected function validateIsbn($attribute, $value, $parameters)
     {
         // Prepare value for validation
-        $value = str_replace(array(' ', '-', '‐', '.'), '', $value);
+        $value = str_replace([' ', '-', '‐', '.'], '', $value);
 
         // Length of value
         $length = strlen($value);
@@ -125,26 +122,25 @@ trait International
     }
 
     /**
-     * Validate ISBN10 number (International Standard Book Number)
+     * Validate ISBN10 number (International Standard Book Number).
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access protected
      * @param  string $attribute
      * @param  string $value
      * @param  array  $parameters
-     * @return boolean
+     * @return bool
      */
     protected function validateIsbn10($attribute, $value, $parameters)
     {
         // Prepare value for validation
-        $value = str_replace(array(' ', '-', '‐', '.'), '', $value);
+        $value = str_replace([' ', '-', '‐', '.'], '', $value);
 
         // Make sure value is exactly 10 characters
         //
         // Sometimes an ISBN10 number can end on an "X". Therefore we
         // only validate the first 9 characeters as numeric.
-        if (strlen($value) != 10 || !is_numeric(substr($value, -10, 9))) {
+        if (strlen($value) != 10 || ! is_numeric(substr($value, -10, 9))) {
             return false;
         }
 
@@ -166,26 +162,24 @@ trait International
         return ($sum % 11) == 0;
     }
 
-
     /**
-     * Validate ISBN13 number (International Standard Book Number)
+     * Validate ISBN13 number (International Standard Book Number).
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access protected
      * @param  string $attribute
      * @param  string $value
      * @param  array  $parameters
-     * @return boolean
+     * @return bool
      */
     protected function validateIsbn13($attribute, $value, $parameters)
     {
         // Prepare value for validation
-        $value = str_replace(array(' ', '-', '‐', '.'), '', $value);
+        $value = str_replace([' ', '-', '‐', '.'], '', $value);
 
         // Make sure value is exactly 13 characters
         // and that all the characters are numeric
-        if (strlen($value) != 13 || !is_numeric($value)) {
+        if (strlen($value) != 13 || ! is_numeric($value)) {
             return false;
         }
 
@@ -193,7 +187,7 @@ trait International
         $checkDigit = substr($value, -1);
 
         // Generate checksum
-        $sum =  $value[0] + ($value[1] * 3) + $value[2] + ($value[3] * 3) +
+        $sum = $value[0] + ($value[1] * 3) + $value[2] + ($value[3] * 3) +
                 $value[4] + ($value[5] * 3) + $value[6] + ($value[7] * 3) +
                 $value[8] + ($value[9] * 3) + $value[10] + ($value[11] * 3);
 
@@ -201,6 +195,6 @@ trait International
         $checksumCheckDigit = 10 - ($sum % 10);
         $checksumCheckDigit = ($checksumCheckDigit == 10) ? 0 : $checksumCheckDigit;
 
-        return ($checkDigit == $checksumCheckDigit);
+        return $checkDigit == $checksumCheckDigit;
     }
 }
