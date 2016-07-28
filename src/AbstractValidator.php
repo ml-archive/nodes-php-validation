@@ -1,4 +1,5 @@
 <?php
+
 namespace Nodes\Validation;
 
 use Illuminate\Database\Eloquent\Model as IlluminateModel;
@@ -7,94 +8,92 @@ use Nodes\Validation\Exceptions\GroupRulesNotFoundException;
 use Nodes\Validation\Exceptions\ValidationException;
 
 /**
- * Class AbstractValidator
+ * Class AbstractValidator.
  *
  * @abstract
- * @package Nodes\Validation
  */
 abstract class AbstractValidator
 {
     /**
-     * Validator Factory instance
+     * Validator Factory instance.
      *
      * @var \Illuminate\Validation\Factory
      */
     protected $validatorFactory;
 
     /**
-     * Resolved validator instance
+     * Resolved validator instance.
      *
      * @var \Illuminate\Validation\Validator
      */
     protected $validator;
 
     /**
-     * Data to be validated
+     * Data to be validated.
      *
      * @var array
      */
     protected $data = [];
 
     /**
-     * Model to validate
+     * Model to validate.
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model = null;
 
     /**
-     * Group name
+     * Group name.
      *
      * @var string
      */
     protected $group = 'create';
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @var array
      */
     protected $rules = [];
 
     /**
-     * Validation custom messages
+     * Validation custom messages.
      *
      * @var array
      */
     protected $messages = [];
 
     /**
-     * Validation custom attributes
+     * Validation custom attributes.
      *
      * @var array
      */
     protected $attributes = [];
 
     /**
-     * Validation custom error codes
+     * Validation custom error codes.
      *
      * @var array
      */
     protected $errorCodes = [];
 
     /**
-     * Validation variables
+     * Validation variables.
      *
      * @var array
      */
     protected $variables = [];
 
     /**
-     * Errors bag
+     * Errors bag.
      *
      * @var \Illuminate\Support\MessageBag
      */
     protected $errors = null;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @access public
      * @param  \Illuminate\Validation\Factory $validatorFactory
      */
     public function __construct(IlluminateValidator $validatorFactory)
@@ -103,12 +102,11 @@ abstract class AbstractValidator
     }
 
     /**
-     * Validate data
+     * Validate data.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
-     * @return boolean
+     * @return bool
      * @throws \Nodes\Validation\Exceptions\ValidationException
      */
     public function validate()
@@ -117,7 +115,7 @@ abstract class AbstractValidator
         $this->validator = $this->validatorFactory->make($this->getData(), $this->getRules(), $this->getMessages(), $this->getAttributes());
 
         // Validation was a success!
-        if (!$this->validator->fails()) {
+        if (! $this->validator->fails()) {
             return true;
         }
 
@@ -128,12 +126,11 @@ abstract class AbstractValidator
     }
 
     /**
-     * Validate data and throw an exception on failure
+     * Validate data and throw an exception on failure.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
-     * @return boolean
+     * @return bool
      * @throws \Nodes\Validation\Exceptions\ValidationException
      */
     public function validateOrFail()
@@ -143,7 +140,7 @@ abstract class AbstractValidator
 
         // If validation failed,
         // we'll throw an exception
-        if (!$passed) {
+        if (! $passed) {
             throw new ValidationException($this->validator, $this->getErrorCodes());
         }
 
@@ -151,11 +148,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set data to validate
+     * Set data to validate.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array $data
      * @return $this
      */
@@ -171,11 +167,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set model to validate
+     * Set model to validate.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  \Illuminate\Database\Eloquent\Model $model
      * @return $this
      */
@@ -191,26 +186,25 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set group name
+     * Set group name.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  string $name
      * @return $this
      */
     public function group($name)
     {
         $this->group = $name;
+
         return $this;
     }
 
     /**
-     * Retrieve errors
+     * Retrieve errors.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function errors()
@@ -219,11 +213,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Retrieve errors message bag
+     * Retrieve errors message bag.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return \Illuminate\Support\MessageBag
      */
     public function errorsBag()
@@ -232,17 +225,16 @@ abstract class AbstractValidator
     }
 
     /**
-     * Retrieve data to validate
+     * Retrieve data to validate.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function getData()
     {
         // If a model has been set, it'll take priority
-        if (!empty($this->model)) {
+        if (! empty($this->model)) {
             return $this->model->toArray();
         }
 
@@ -250,11 +242,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Retrieve validation rules
+     * Retrieve validation rules.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      * @throws \Nodes\Validation\Exceptions\GroupRulesNotFoundException
      */
@@ -269,7 +260,7 @@ abstract class AbstractValidator
         }
 
         // Make sure group exists in rules array
-        if (!array_key_exists($group, $this->rules)) {
+        if (! array_key_exists($group, $this->rules)) {
             throw new GroupRulesNotFoundException(sprintf('Group [%s] not found in rules array', $group));
         }
 
@@ -277,26 +268,25 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set validation rules
+     * Set validation rules.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array $rules
      * @return $this
      */
     public function setRules(array $rules)
     {
         $this->rules = $rules;
+
         return $this;
     }
 
     /**
-     * Retrieve custom error messages
+     * Retrieve custom error messages.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function getMessages()
@@ -305,26 +295,25 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set custom error messages
+     * Set custom error messages.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array $messages
      * @return $this
      */
     public function setMessages(array $messages)
     {
         $this->messages = $messages;
+
         return $this;
     }
 
     /**
-     * Retrieve custom attributes
+     * Retrieve custom attributes.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function getAttributes()
@@ -333,41 +322,40 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set custom attributes
+     * Set custom attributes.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array $attributes
      * @return $this
      */
     public function setAttributes(array $attributes)
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
     /**
-     * Set custom error codes
+     * Set custom error codes.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array $errorCodes
      * @return $this
      */
     public function setErrorCodes(array $errorCodes)
     {
         $this->errorCodes = $errorCodes;
+
         return $this;
     }
 
     /**
-     * Retrieve custom error codes
+     * Retrieve custom error codes.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function getErrorCodes()
@@ -376,11 +364,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Retrieve all messages from error bag
+     * Retrieve all messages from error bag.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function getErrorMessages()
@@ -389,11 +376,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Retrieve all failed rules from error bag
+     * Retrieve all failed rules from error bag.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @return array
      */
     public function getFailedRules()
@@ -402,11 +388,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Set validation variables
+     * Set validation variables.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array  $data
      * @param  string $nestedKey
      * @return \Nodes\Validation\AbstractValidator
@@ -415,14 +400,14 @@ abstract class AbstractValidator
     {
         foreach ($data as $key => $value) {
             // Add support for nested arrays
-            $key = !empty($nestedKey) ? $nestedKey . '.' . $key : $key;
+            $key = ! empty($nestedKey) ? $nestedKey.'.'.$key : $key;
 
             // If value is an array, we need to created a nested key
             // until we reach the final value.
             if (is_array($value)) {
                 $this->setValidationVariables($value, $key);
             } else {
-                $this->variables['{:' . $key . '}'] = $value;
+                $this->variables['{:'.$key.'}'] = $value;
             }
         }
 
@@ -430,11 +415,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * Prepare rules and each rule's tests
+     * Prepare rules and each rule's tests.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  array $rules
      * @return array
      */
@@ -445,7 +429,7 @@ abstract class AbstractValidator
 
         foreach ($rules as $key => $tests) {
             // Support arrays and pipes-splitted cases
-            $tests = !is_array($tests) ? explode('|', $tests) : $tests;
+            $tests = ! is_array($tests) ? explode('|', $tests) : $tests;
 
             // Prepared tests container
             $preparedTests = [];

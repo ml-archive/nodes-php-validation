@@ -1,19 +1,19 @@
 <?php
-if (!function_exists('validation_key_failed')) {
+
+if (! function_exists('validation_key_failed')) {
     /**
-     * Check if a specific key has failed validation
+     * Check if a specific key has failed validation.
      *
      * @author Morten Rugaard <moru@nodes.dk>
      *
-     * @access public
      * @param  string $key
-     * @return boolean
+     * @return bool
      */
     function validation_key_failed($key)
     {
         // Only continue if we actually
         // have a validation that has failed
-        if (!\Session::has('error')) {
+        if (! \Session::has('error')) {
             return false;
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -14,5 +15,5 @@ return [
     | Laravel's own "Illuminate\Validation\Validator".
     |
     */
-    'validator' => 'Nodes\Validation\Validator'
+    'validator' => 'Nodes\Validation\Validator',
 ];
