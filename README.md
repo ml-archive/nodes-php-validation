@@ -10,6 +10,7 @@ A validation manager made more flexible validators in [Laravel](https://laravel.
 [![Star repository on GitHub](https://img.shields.io/github/stars/nodes-php/validation.svg?style=social&label=Star)](https://github.com/nodes-php/validation/stargazers)
 [![Watch repository on GitHub](https://img.shields.io/github/watchers/nodes-php/validation.svg?style=social&label=Watch)](https://github.com/nodes-php/validation/watchers)
 [![Fork repository on GitHub](https://img.shields.io/github/forks/nodes-php/validation.svg?style=social&label=Fork)](https://github.com/nodes-php/validation/network)
+[![StyleCI](https://styleci.io/repos/49194830/shield)](https://styleci.io/repos/49194830)
 
 ## 📝 Introduction
 
