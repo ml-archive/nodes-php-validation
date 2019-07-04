@@ -20,8 +20,6 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
-        parent::boot();
-
         // Register publish groups
         $this->publishGroups();
 
